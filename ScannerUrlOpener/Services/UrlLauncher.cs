@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace ScannerUrlOpener;
+namespace ScannerUrlOpener.Services;
 
 internal sealed class UrlLauncher
 {

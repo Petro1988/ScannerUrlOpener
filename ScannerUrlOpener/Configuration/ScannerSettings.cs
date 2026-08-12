@@ -1,4 +1,6 @@
-﻿namespace ScannerUrlOpener;
+﻿using ScannerUrlOpener.Services;
+
+namespace ScannerUrlOpener.Configuration;
 
 internal sealed class ScannerSettings
 {
@@ -15,6 +17,8 @@ internal sealed class ScannerSettings
     public int NotificationDurationMilliseconds { get; init; } = 1500;
 
     public string TestUrl { get; init; } = "http://inventory/LOGINventory/default.aspx";
+
+    public long MaximumLogFileSizeBytes { get; init; } = 5 * 1024 * 1024;
 
     public void Validate()
     {
@@ -61,6 +65,20 @@ internal sealed class ScannerSettings
         {
             throw new InvalidOperationException(
                 "TestUrl darf nicht leer sein.");
+        }
+
+        if (MaximumLogFileSizeBytes <= 0)
+        {
+            throw new InvalidOperationException(
+                "MaximumLogFileSizeBytes muss größer als 0 sein.");
+        }
+        
+        if (!UrlValidator.TryValidate(
+        TestUrl,
+        out _))
+        {
+            throw new InvalidOperationException(
+                "TestUrl muss eine gültige HTTP- oder HTTPS-Adresse sein.");
         }
     }
 }

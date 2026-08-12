@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace ScannerUrlOpener;
+namespace ScannerUrlOpener.Input;
 
 internal sealed class ScannerDeviceMatcher
 {

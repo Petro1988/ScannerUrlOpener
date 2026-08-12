@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace ScannerUrlOpener;
+namespace ScannerUrlOpener.Configuration;
 
 internal sealed class ScannerDeviceConfigurationStore
 {

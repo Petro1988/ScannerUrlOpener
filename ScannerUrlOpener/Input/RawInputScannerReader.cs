@@ -1,7 +1,9 @@
-﻿using System.Runtime.InteropServices;
+﻿using ScannerUrlOpener.Configuration;
+using ScannerUrlOpener.Services;
+using System.Runtime.InteropServices;
 using System.Text;
 
-namespace ScannerUrlOpener;
+namespace ScannerUrlOpener.Input;
 
 internal sealed class RawInputScannerReader : IDisposable
 {
@@ -160,7 +162,7 @@ internal sealed class RawInputScannerReader : IDisposable
 
         StringBuilder resultBuffer = new(8);
 
-        IntPtr keyboardLayout = GetKeyboardLayout(0);
+        nint keyboardLayout = GetKeyboardLayout(0);
 
         int result = ToUnicodeEx(
             (uint)virtualKey,
@@ -209,12 +211,8 @@ internal sealed class RawInputScannerReader : IDisposable
 
         ResetInputState();
 
-        if (scannedValue.Length < _settings.MinimumScanLength)
+        if (string.IsNullOrWhiteSpace(scannedValue))
         {
-            _logger.Warning(
-                "Raw-Input-Scan wurde verworfen, weil die " +
-                "Mindestlänge nicht erreicht wurde.");
-
             return;
         }
 
@@ -263,9 +261,9 @@ internal sealed class RawInputScannerReader : IDisposable
         StringBuilder receivingBuffer,
         int bufferSize,
         uint flags,
-        IntPtr keyboardLayout);
+        nint keyboardLayout);
 
     [DllImport("user32.dll")]
-    private static extern IntPtr GetKeyboardLayout(
+    private static extern nint GetKeyboardLayout(
         uint threadId);
 }

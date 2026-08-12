@@ -1,4 +1,4 @@
-﻿namespace ScannerUrlOpener;
+﻿namespace ScannerUrlOpener.Configuration;
 
 internal sealed class ScannerDeviceConfiguration
 {

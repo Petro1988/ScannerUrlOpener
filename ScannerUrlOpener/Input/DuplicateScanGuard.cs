@@ -1,4 +1,4 @@
-﻿namespace ScannerUrlOpener;
+﻿namespace ScannerUrlOpener.Input;
 
 internal sealed class DuplicateScanGuard
 {

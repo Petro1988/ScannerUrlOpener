@@ -1,9 +1,9 @@
-﻿namespace ScannerUrlOpener;
+﻿namespace ScannerUrlOpener.Input;
 
 internal sealed class RawInputKeyEventArgs : EventArgs
 {
     public RawInputKeyEventArgs(
-        IntPtr deviceHandle,
+        nint deviceHandle,
         string deviceName,
         ushort virtualKey,
         ushort scanCode,
@@ -16,7 +16,7 @@ internal sealed class RawInputKeyEventArgs : EventArgs
         IsKeyReleased = isKeyReleased;
     }
 
-    public IntPtr DeviceHandle { get; }
+    public nint DeviceHandle { get; }
 
     public string DeviceName { get; }
 

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
 
-namespace ScannerUrlOpener;
+namespace ScannerUrlOpener.Input;
 
 internal sealed class RawInputWindow : NativeWindow, IDisposable
 {
@@ -71,7 +71,7 @@ internal sealed class RawInputWindow : NativeWindow, IDisposable
         base.WndProc(ref message);
     }
 
-    private void ProcessRawInput(IntPtr rawInputHandle)
+    private void ProcessRawInput(nint rawInputHandle)
     {
         uint dataSize = 0;
         uint headerSize =
@@ -80,7 +80,7 @@ internal sealed class RawInputWindow : NativeWindow, IDisposable
         uint firstResult = GetRawInputData(
             rawInputHandle,
             RidInput,
-            IntPtr.Zero,
+            nint.Zero,
             ref dataSize,
             headerSize);
 
@@ -89,7 +89,7 @@ internal sealed class RawInputWindow : NativeWindow, IDisposable
             return;
         }
 
-        IntPtr buffer = Marshal.AllocHGlobal((int)dataSize);
+        nint buffer = Marshal.AllocHGlobal((int)dataSize);
 
         try
         {
@@ -116,7 +116,7 @@ internal sealed class RawInputWindow : NativeWindow, IDisposable
                 return;
             }
 
-            IntPtr keyboardPointer = IntPtr.Add(
+            nint keyboardPointer = nint.Add(
                 buffer,
                 Marshal.SizeOf<RawInputHeader>());
 
@@ -151,7 +151,7 @@ internal sealed class RawInputWindow : NativeWindow, IDisposable
     }
 
     private static string GetDeviceName(
-        IntPtr deviceHandle)
+        nint deviceHandle)
     {
         uint characterCount = 0;
 
@@ -199,7 +199,7 @@ internal sealed class RawInputWindow : NativeWindow, IDisposable
         public ushort UsagePage;
         public ushort Usage;
         public uint Flags;
-        public IntPtr TargetWindow;
+        public nint TargetWindow;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -207,8 +207,8 @@ internal sealed class RawInputWindow : NativeWindow, IDisposable
     {
         public uint Type;
         public uint Size;
-        public IntPtr Device;
-        public IntPtr WParam;
+        public nint Device;
+        public nint WParam;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -235,9 +235,9 @@ internal sealed class RawInputWindow : NativeWindow, IDisposable
         "user32.dll",
         SetLastError = true)]
     private static extern uint GetRawInputData(
-        IntPtr rawInputHandle,
+        nint rawInputHandle,
         uint command,
-        IntPtr data,
+        nint data,
         ref uint dataSize,
         uint headerSize);
 
@@ -246,7 +246,7 @@ internal sealed class RawInputWindow : NativeWindow, IDisposable
         CharSet = CharSet.Unicode,
         SetLastError = true)]
     private static extern uint GetRawInputDeviceInfo(
-        IntPtr deviceHandle,
+        nint deviceHandle,
         uint command,
         StringBuilder? data,
         ref uint dataSize);
